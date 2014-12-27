@@ -39,6 +39,13 @@ class Mouse
     protected $weapon;
 
     /**
+     * Hole's deep level.
+     *
+     * @var $deepLevel
+     */
+    public $deepLevel = 1;
+
+    /**
      * @constructor
      */
     public function __construct($name = 'Souris')
@@ -106,5 +113,13 @@ class Mouse
         }
     }
 
-
+    /**
+     * Get deep level.
+     *
+     * @return int
+     */
+    public function getDeepLevel()
+    {
+        return $this->deepLevel;
+    }
 }

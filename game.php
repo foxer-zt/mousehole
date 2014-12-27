@@ -3,6 +3,7 @@ namespace IrishdashGame;
 
 use Irishdash\Mouse\Mouse;
 use Irishdash\Item\Sword;
+use Irishdash\Hole\Hole;
 
 class Game
 {
@@ -11,7 +12,7 @@ class Game
      */
     public function __construct()
     {
-        $this->init();
+        //
     }
 
     /**
@@ -21,27 +22,16 @@ class Game
      */
     public function init()
     {
+        $hole = new Hole();
         $irishdash = new Mouse('Irishdash');
-        $this->combatLog($irishdash);
-
         $irishdash->getStats()->changeStat('strength', 4);
-        $this->combatLog($irishdash);
-
         $sword = new Sword();
         $irishdash->addToInventory($sword);
         $irishdash->applyWeaponFromInventory($sword);
-        $this->combatLog($irishdash);
-    }
+        $hole->placeMouseInHole($irishdash);
+        $hole->incDeep($irishdash);
+        echo $irishdash->getDeepLevel();
 
-    /**
-     * Displays mouse attack damage.
-     *
-     * @param Mouse $mouse
-     * @return void
-     */
-    public function combatLog(Mouse $mouse)
-    {
-        echo "{$mouse->getName()} aтакует на {$mouse->getDamage()} урона\n";
     }
 }
 
