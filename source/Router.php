@@ -6,9 +6,10 @@ class Router
     const C_NS = 'Irishdash\\Controllers\\';
     const C_PREFIX = 'Controller';
 
-    private $controller;
-    private $action;
-    private $urlValues;
+    protected  $controller;
+    protected $action;
+    protected $urlValues;
+    protected $params;
 
     /**
      * Store the URL values on object creation.
@@ -24,8 +25,12 @@ class Router
             : $this->getDefaultController();
 
         $this->action = isset($this->urlValues['action'])
-            ? $this->resolveAction($this->urlValues['action'])
+            ? $this->urlValues['action']
             : $this->getDefaultAction();
+
+        $this->params = isset($this->urlValues['params'])
+            ? $this->resolveParams($this->urlValues['params'])
+            : null;
     }
 
     /**
@@ -50,22 +55,21 @@ class Router
     }
 
     /**
-     * Resolve action and params.
+     * Resolve params.
      *
      * @param $query
      * @return array|string
      */
-    protected function resolveAction($query)
+    protected function resolveParams($query)
     {
         if (strpos($query, '/') !== false) {
             $args = array();
             $params = explode('/', $query);
-            $action = array_shift($params);
             for ($i = 0; $i < count($params); $i += 2) {
                 $args[$params[$i]] = $params[$i + 1];
             }
             unset($params);
-            return array('action' => $action, 'args' => $args);
+            return $args;
         } else {
             return $query;
         }
@@ -86,7 +90,7 @@ class Router
             $parents = class_parents($controller);
             //does the class extend the controller class?
             if (in_array(self::C_NS . "BaseController", $parents)) {
-                return new $this->controller($this->action, $this->urlValues);
+                return new $this->controller($this->action, $this->params);
             } else {
                 //bad controller error
                 throw new \Exception("Controller $controller should extend BaseController.");

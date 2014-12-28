@@ -12,18 +12,18 @@ abstract class BaseController
     const V_PREFIX = 'Template';
 
     /**
-     * @var string
+     * @var array
      */
-    protected $urlValues;
+    protected $params;
 
     /**
      * @var string
      */
     protected $action;
 
-    public function __construct($action, $urlValues) {
+    public function __construct($action, $params) {
         $this->action = $action;
-        $this->urlValues = $urlValues;
+        $this->params = $params;
     }
 
     /**
@@ -32,8 +32,8 @@ abstract class BaseController
      * @return mixed
      */
     public function executeAction() {
-        return is_array($this->action)
-            ? $this->{$this->action['action']}($this->action['args'])
+        return is_array($this->params)
+            ? $this->{$this->action}($this->params)
             : $this->{$this->action}();
     }
 
