@@ -4,12 +4,23 @@ namespace Irishdash\Controllers;
 class HomeController extends BaseController
 {
     /**
-     * Home index action.
+     * Home action.
      *
      * @return void.
      */
     public function index()
     {
-        $this->render('HomeTemplate', array('name' => 'Irishdash'));
+        $this->render('Index');
+    }
+
+    /**
+     * Index action.
+     *
+     * @param array $args
+     * @return void.
+     */
+    public function home($args)
+    {
+        $this->render('Home', $args);
     }
 }

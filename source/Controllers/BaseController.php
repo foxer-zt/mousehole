@@ -8,6 +8,9 @@ use Irishdash\Views\ViewInterface;
  */
 abstract class BaseController
 {
+    const V_NS = 'Irishdash\\Views\\';
+    const V_PREFIX = 'Template';
+
     /**
      * @var string
      */
@@ -29,7 +32,9 @@ abstract class BaseController
      * @return mixed
      */
     public function executeAction() {
-        return $this->{$this->action}();
+        return is_array($this->action)
+            ? $this->{$this->action['action']}($this->action['args'])
+            : $this->{$this->action}();
     }
 
     /**
@@ -38,10 +43,21 @@ abstract class BaseController
      * @param string $viewModel
      * @param array $args
      */
-    protected function render($viewModel, array $args) {
-        $viewTemplate = "Irishdash\\Views\\" . ucfirst($viewModel);
+    protected function render($viewModel, array $args = array()) {
+        $viewTemplate = $this->resolveTemplateName($viewModel);
         /** @var ViewInterface $viewTemplate */
         $viewTemplate = new $viewTemplate($args);
         $viewTemplate->render();
+    }
+
+    /**
+     * Resolve template name.
+     *
+     * @param string $view
+     * @return string
+     */
+    protected function resolveTemplateName($view)
+    {
+        return self::V_NS . ucfirst($view) . self::V_PREFIX;
     }
 }

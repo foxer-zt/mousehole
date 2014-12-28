@@ -1,10 +1,10 @@
 <?php
 require_once("./vendor/autoload.php");
 //create the controller and execute the action
-$loader = new \Irishdash\Loader($_GET);
+$route = new \Irishdash\Router($_GET);
 
 /** @var \Irishdash\Controllers\BaseController $controller */
-$controller = $loader->createController();
+$controller = $route->createController();
 $controller->executeAction();
 
 
